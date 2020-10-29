@@ -28,4 +28,4 @@ const updateBlog= async(updatedBlog) => {
   return response.data
 }
 
-export default { setToken, getAll, createBlog, updateBlog}
+export default { setToken, getAll, createBlog, updateBlog }

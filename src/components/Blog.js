@@ -22,11 +22,12 @@ const Blog = ({ blog, handleLike }) => {
           <div className='url'>{ blog.url }</div>
           <div className='likes'>
             {blog.likes}
-            <button onClick={ () => handleLike(blog) }>like</button>
+            <button className='likeButton' onClick={ () => handleLike(blog) }>like</button>
           </div>
           <button onClick={ toggleShowAll }>hide</button>
         </>
-        : <button onClick={ toggleShowAll }>view details</button> }
+
+        : <button className='showAll' onClick={ toggleShowAll }>view details</button> }
     </div>
   )}
 
