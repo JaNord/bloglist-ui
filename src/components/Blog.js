@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
-const Blog = ({ blog, handleLike }) => {
+const Blog = ({ blog, username, handleLike, handleDelete }) => {
 
   const [showAllInfo, setShowAllInfo] = useState(false)
+  const isDeleteVisible = username === blog.user.username
 
   const toggleShowAll = () => {
     setShowAllInfo(!showAllInfo)
   }
+
+  const showDeleteButton = { display: isDeleteVisible? '': 'none' }
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -24,7 +27,12 @@ const Blog = ({ blog, handleLike }) => {
             {blog.likes}
             <button className='likeButton' onClick={ () => handleLike(blog) }>like</button>
           </div>
-          <button onClick={ toggleShowAll }>hide</button>
+          <div>
+            <button onClick={ toggleShowAll }>hide</button>
+            <button
+              style={ showDeleteButton }
+              onClick={() => handleDelete(blog) }>delete</button>
+          </div>
         </>
 
         : <button className='showAll' onClick={ toggleShowAll }>view details</button> }

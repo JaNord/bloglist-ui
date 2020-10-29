@@ -64,9 +64,27 @@ const App = () => {
     )
   }
 
+  const deleteBlog = async (deletedBlog) => {
+
+    console.log(user.username)
+    console.log(deletedBlog.user.username)
+
+    if(window.confirm(`Delete ${deletedBlog.title} ?`)){
+      try {
+        await blogService.deleteBlog(deletedBlog)
+        setBlogs(blogs.filter(blog => blog.id !== deletedBlog.id ))
+      }
+      catch(exception) {
+        console.log('blog deletion failed')
+
+      }
+    }
+  }
+
   const createBlog = async (newBlog) => {
     try {
       const createdBlog = await blogService.createBlog(newBlog)
+      console.log(createdBlog)
       setBlogs(blogs.concat(createdBlog))
     }
 
@@ -83,11 +101,12 @@ const App = () => {
       {user !== null
         ? <BlogView
           blogs={ blogs }
-          username={ user.name }
+          username={ user.username }
           blogFormRef={ blogFormRef }
           handleLogout={ handleLogout }
           createBlog={ createBlog }
-          handleLike={ likeBlog }/>
+          handleLike={ likeBlog }
+          handleDelete={ deleteBlog }/>
 
         : <Login login={ login }/>}
     </div>

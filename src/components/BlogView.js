@@ -13,7 +13,8 @@ const BlogView = ({
   blogFormRef,
   handleLogout,
   createBlog,
-  handleLike }) => {
+  handleLike,
+  handleDelete }) => {
 
   return (
     <>
@@ -26,7 +27,9 @@ const BlogView = ({
             <Blog
               key={blog.id}
               blog={blog}
-              handleLike = { handleLike }/>
+              username= { username }
+              handleLike={ handleLike }
+              handleDelete={ handleDelete }/>
           )}
       </ul>
 
@@ -39,7 +42,9 @@ const BlogView = ({
 BlogView.propTypes = {
   username: PropTypes.string.isRequired,
   handleLogout: PropTypes.func.isRequired,
-  createBlog: PropTypes.func.isRequired
+  createBlog: PropTypes.func.isRequired,
+  handleLike: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired
 }
 
 export default BlogView
