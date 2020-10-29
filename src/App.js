@@ -13,6 +13,7 @@ const App = () => {
 
   useEffect(() => {
     try{
+      // using async/await in useEffect method is wonky
       blogService.getAll().then(blogs =>
         setBlogs( blogs )
       )
