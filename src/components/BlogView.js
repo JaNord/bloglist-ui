@@ -1,4 +1,7 @@
 import React from 'react'
+
+import PropTypes from 'prop-types'
+
 import Blog from './Blog'
 import BlogForm from './BlogForm'
 import Togglable from './Togglable'
@@ -24,4 +27,11 @@ const BlogView = ({
     </Togglable>
   </>
 )}
+
+BlogView.propTypes = {
+  username: PropTypes.string.isRequired,
+  handleLogout: PropTypes.func.isRequired,
+  createBlog: PropTypes.func.isRequired
+}
+
 export default BlogView
