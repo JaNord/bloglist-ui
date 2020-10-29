@@ -52,6 +52,17 @@ const App = () => {
     setUser(null)
   }
 
+  const likeBlog = async (blog) => {
+    const updatedBlog = { ...blog, likes: blog.likes + 1 }
+
+    const returnedBlog = await blogService.updateBlog(updatedBlog)
+    setBlogs(
+      blogs.map(blog => blog.id !== returnedBlog.id
+        ? blog
+        : returnedBlog)
+    )
+  }
+
   const createBlog = async (newBlog) => {
     try {
       const createdBlog = await blogService.createBlog(newBlog)
@@ -74,7 +85,8 @@ const App = () => {
           username={ user.name }
           blogFormRef={ blogFormRef }
           handleLogout={ handleLogout }
-          createBlog={ createBlog }/>
+          createBlog={ createBlog }
+          handleLike={ likeBlog }/>
 
         : <Login login={ login }/>}
     </div>
