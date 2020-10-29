@@ -2,12 +2,14 @@ import React, { useState, useEffect, useRef } from 'react'
 
 import BlogView from './components/BlogView'
 import Login from './components/Login'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
+  const [notification, setNotification] = useState(null)
 
   const blogFormRef = useRef()
 
@@ -26,11 +28,18 @@ const App = () => {
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
+      const loggedUser = JSON.parse(loggedUserJSON)
 
-      setUser(user)
-      blogService.setToken(user.token)
+      setUser(loggedUser)
+      blogService.setToken(loggedUser.token)
     }}, [])
+
+  const showNotification = (message, duration) => {
+    setNotification(message)
+    setTimeout(() => {
+      setNotification(null)
+    }, duration)
+  }
 
   const login = async (user) => {
     try {
@@ -41,15 +50,16 @@ const App = () => {
         .setItem('loggedUser', JSON.stringify(authenticatedUser))
 
       setUser(authenticatedUser)
+      blogService.setToken(authenticatedUser.token)
     }
 
     catch(exception) {
-      console.log('wrong credentials')
+      showNotification('wrong username or password', 2000)
     }
   }
 
   const handleLogout = () => {
-    window.localStorage.removeItem('loggedUser')
+    window.localStorage.clear()
     setUser(null)
   }
 
@@ -73,10 +83,11 @@ const App = () => {
       try {
         await blogService.deleteBlog(deletedBlog)
         setBlogs(blogs.filter(blog => blog.id !== deletedBlog.id ))
+
+        showNotification(`${ deletedBlog.title} deleted.`, 2000)
       }
       catch(exception) {
-        console.log('blog deletion failed')
-
+        showNotification('Blog deletion failed', 2000)
       }
     }
   }
@@ -86,10 +97,12 @@ const App = () => {
       const createdBlog = await blogService.createBlog(newBlog)
       console.log(createdBlog)
       setBlogs(blogs.concat(createdBlog))
+
+      showNotification(`${ createdBlog.title} created.`, 2000)
     }
 
     catch(exception) {
-      console.log('blog creation failed')
+      showNotification('Blog creation failed', 2000)
     }
     blogFormRef.current.toggleVisibility()
   }
@@ -97,7 +110,7 @@ const App = () => {
   return (
     <div>
       <h2>Blogs</h2>
-
+      <Notification message={ notification }/>
       {user !== null
         ? <BlogView
           blogs={ blogs }

@@ -27,6 +27,7 @@ const Blog = ({ blog, username, handleLike, handleDelete }) => {
             {blog.likes}
             <button className='likeButton' onClick={ () => handleLike(blog) }>like</button>
           </div>
+          <div>added by: { blog.user.username }</div>
           <div>
             <button onClick={ toggleShowAll }>hide</button>
             <button
