@@ -13,20 +13,20 @@ const BlogView = ({
   blogFormRef,
   handleLogout,
   createBlog }) => {
-    
-  return (
-  <>
-    <UserInfo username={ username } handleLogout={ handleLogout }/>
 
-    {blogs.map(blog =>
-       <Blog key={blog.id} blog={blog} />
+  return (
+    <>
+      <UserInfo username={ username } handleLogout={ handleLogout }/>
+
+      {blogs.map(blog =>
+        <Blog key={blog.id} blog={blog} />
       )}
 
-    <Togglable buttonLabel='add blog' ref={ blogFormRef }>
-      <BlogForm createBlog={ createBlog }/>
-    </Togglable>
-  </>
-)}
+      <Togglable buttonLabel='add blog' ref={ blogFormRef }>
+        <BlogForm createBlog={ createBlog }/>
+      </Togglable>
+    </>
+  )}
 
 BlogView.propTypes = {
   username: PropTypes.string.isRequired,

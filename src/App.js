@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+
 import BlogView from './components/BlogView'
 import Login from './components/Login'
 import blogService from './services/blogs'
@@ -12,34 +13,33 @@ const App = () => {
 
   useEffect(() => {
     try{
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )
+      blogService.getAll().then(blogs =>
+        setBlogs( blogs )
+      )
     }
     catch(exception) {
       console.log('could not fetch blogs')
-    }  
+    }
   }, [])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      
+
       setUser(user)
       blogService.setToken(user.token)
     }}, [])
 
   const login = async (user) => {
-    
     try {
-    const authenticatedUser = await loginService.authenticate(user)
+      const authenticatedUser = await loginService.authenticate(user)
 
-    window
-      .localStorage
-      .setItem('loggedUser', JSON.stringify(authenticatedUser))
+      window
+        .localStorage
+        .setItem('loggedUser', JSON.stringify(authenticatedUser))
 
-    setUser(authenticatedUser)
+      setUser(authenticatedUser)
     }
 
     catch(exception) {
@@ -69,14 +69,14 @@ const App = () => {
       <h2>Blogs</h2>
 
       {user !== null
-      ? <BlogView
+        ? <BlogView
           blogs={ blogs }
           username={ user.name }
           blogFormRef={ blogFormRef }
           handleLogout={ handleLogout }
           createBlog={ createBlog }/>
 
-      : <Login login={ login }/>}
+        : <Login login={ login }/>}
     </div>
   )
 }
