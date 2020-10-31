@@ -19,7 +19,7 @@ const Blog = ({ blog, username, handleLike, handleDelete }) => {
   }
 
   return (
-    <div style={ blogStyle }>
+    <div className='blogContainer' style={ blogStyle }>
       <div className='basicInfo'>{ blog.title } { blog.author }</div>
       { showAllInfo
         ?<>

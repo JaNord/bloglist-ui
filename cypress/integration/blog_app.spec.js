@@ -64,14 +64,23 @@ describe('Blog List', function() {
         cy.createBlog({
           title: 'Blog created by Cypress',
           author: 'Cypress',
-          url: 'https://www.cypress.io'
+          url: 'https://www.cypress.io',
         })
 
         cy.createBlog({
           title: 'Second blog created by Cypress',
           author: 'Cypress',
-          url: 'https://www.cypress.io'
+          url: 'https://www.cypress.io',
+          likes: 5
         })
+
+        cy.createBlog({
+          title: 'Third blog created by Cypress',
+          author: 'Cypress',
+          url: 'https://www.cypress.io',
+          likes: 3
+        })
+
       })
 
       it('a blog can be liked', function() {
@@ -97,6 +106,29 @@ describe('Blog List', function() {
         cy.contains('Blog created by Cypress deleted')
 
         cy.contains('Blog created by Cypress').should('not.exist')
+      })
+
+      it('blogs should be sorted by amounts of likes', function() {
+        cy
+          .get('.blogList')
+          .find('.blogContainer')
+          .each((blogContainer) => {
+            cy
+              .wrap(blogContainer)
+              .contains('view details')
+              .click()
+          })
+          .get('.likes')
+          .then(likeElements => {
+            const likes = [...likeElements].map(el => el.innerText.substring(0,1))
+
+            likes.forEach((like, i) => {
+              if(i > 0) {
+                expect(like < likes[i-1]).to.be.true
+              }
+            })
+
+          })
       })
     })
   })
