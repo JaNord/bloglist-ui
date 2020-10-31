@@ -9,6 +9,7 @@ const Blog = ({ blog, username, handleLike, handleDelete }) => {
   }
 
   const showDeleteButton = { display: isDeleteVisible? '': 'none' }
+
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -23,11 +24,14 @@ const Blog = ({ blog, username, handleLike, handleDelete }) => {
       { showAllInfo
         ?<>
           <div className='url'>{ blog.url }</div>
+
           <div className='likes'>
             {blog.likes}
             <button className='likeButton' onClick={ () => handleLike(blog) }>like</button>
           </div>
+
           <div>added by: { blog.user.username }</div>
+
           <div>
             <button onClick={ toggleShowAll }>hide</button>
             <button

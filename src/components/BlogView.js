@@ -20,7 +20,7 @@ const BlogView = ({
     <>
       <UserInfo username={ username } handleLogout={ handleLogout }/>
 
-      <ul>
+      <ul className='blogList'>
         {blogs
           .sort((blog1,blog2) => blog2.likes - blog1.likes)
           .map(blog =>

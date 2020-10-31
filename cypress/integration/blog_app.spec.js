@@ -35,17 +35,27 @@ describe('Blog List', function() {
 
       cy.contains('wrong username or password')
     })
-
-
   })
 
-  // describe('when logged in', function() {
-  //   beforeEach(function() {
-  //     cy.login({
-  //       username: 'tester',
-  //       password: 'testPassword123'
-  //     })
-  //   })
+  describe('when logged in', function() {
 
-  // })
+    beforeEach(function() {
+      cy.login({
+        username: 'tester',
+        password: 'testPassword123'
+      })
+    })
+
+    it('a blog can be created', function() {
+      cy.contains('add blog').click()
+
+      cy.get('#title').type('Blog created by cypress')
+      cy.get('#author').type('Cypress')
+      cy.get('#url').type('https://www.cypress.io')
+
+      cy.get('#submitBlogForm').click()
+
+      cy.get('.blogList').contains('Blog created by cypress')
+    })
+  })
 })
