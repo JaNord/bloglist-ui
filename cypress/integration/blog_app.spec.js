@@ -85,6 +85,19 @@ describe('Blog List', function() {
 
         cy.get('.likes').contains(1)
       })
+
+      it('a blog can be deleted by the user who created it', function() {
+        cy
+          .contains('Blog created by Cypress')
+          .parent()
+          .find('button')
+          .click()
+
+        cy.contains('delete').click()
+        cy.contains('Blog created by Cypress deleted')
+
+        cy.contains('Blog created by Cypress').should('not.exist')
+      })
     })
   })
 })
