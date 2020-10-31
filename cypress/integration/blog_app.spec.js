@@ -28,7 +28,7 @@ describe('Blog List', function() {
       cy.contains('tester logged in')
     })
 
-    it('fils with incorrect credentials', function() {
+    it('fills with incorrect credentials', function() {
       cy.get('#username').type('tester')
       cy.get('#password').type('wrong')
       cy.get('#loginButton').click()
@@ -56,6 +56,35 @@ describe('Blog List', function() {
       cy.get('#submitBlogForm').click()
 
       cy.get('.blogList').contains('Blog created by cypress')
+    })
+
+    describe('when blog list is populated', function() {
+
+      beforeEach(function() {
+        cy.createBlog({
+          title: 'Blog created by Cypress',
+          author: 'Cypress',
+          url: 'https://www.cypress.io'
+        })
+
+        cy.createBlog({
+          title: 'Second blog created by Cypress',
+          author: 'Cypress',
+          url: 'https://www.cypress.io'
+        })
+      })
+
+      it('a blog can be liked', function() {
+        cy
+          .contains('Blog created by Cypress')
+          .parent()
+          .find('button')
+          .click()
+
+        cy.get('.likeButton').click()
+
+        cy.get('.likes').contains(1)
+      })
     })
   })
 })
