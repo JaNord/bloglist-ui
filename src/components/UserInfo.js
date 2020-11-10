@@ -1,6 +1,16 @@
 import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 
-const UserInfo = ({ username, handleLogout }) => {
+import { removeUser } from '../reducers/userReducer'
+
+const UserInfo = () => {
+  const username = useSelector(state => state.user.username)
+  const dispatch = useDispatch()
+
+  const handleLogout = () => {
+    dispatch(removeUser())
+    window.localStorage.clear()
+  }
 
   return (
     <>

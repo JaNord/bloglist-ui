@@ -1,26 +1,32 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 
-const BlogForm = ({ createBlog }) => {
+import { addBlog } from '../reducers/blogReducer'
+import { setNotificationWithTimeout } from '../reducers/notificationReducer'
+
+const BlogForm = () => {
 
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
-  const addBlog = async (event) => {
+  const dispatch = useDispatch()
+
+  const createBlog = async (event) => {
     event.preventDefault()
 
-    await createBlog({
-      title,
-      author,
-      url
-    })
+    dispatch(addBlog({ title, author, url }))
+    dispatch(setNotificationWithTimeout(`${ title } created.`))
+    setTitle('')
+    setAuthor('')
+    setUrl('')
   }
 
   return (
     <>
       <h2>create new</h2>
 
-      <form onSubmit={ addBlog }>
+      <form onSubmit={ createBlog }>
         <div>
           title:
           <input

@@ -12,7 +12,7 @@ const Notification = ({ message }) => {
     marginBottom: 10
   }
 
-  if(message === null) {
+  if(!message) {
     return null
   }
 

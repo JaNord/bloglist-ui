@@ -1,11 +1,36 @@
 import React, { useState } from 'react'
-const Blog = ({ blog, username, handleLike, handleDelete }) => {
+import { useSelector, useDispatch } from 'react-redux'
+import { updateBlog, deleteBlog } from '../reducers/blogReducer'
+import { setNotificationWithTimeout } from '../reducers/notificationReducer'
+
+const Blog = ({ blog }) => {
 
   const [showAllInfo, setShowAllInfo] = useState(false)
+
+  const username = useSelector(state => state.user.username)
   const isDeleteVisible = username === blog.user.username
+
+  const dispatch = useDispatch()
 
   const toggleShowAll = () => {
     setShowAllInfo(!showAllInfo)
+  }
+
+  const like = () => {
+    const updatedBlog = { ...blog, likes: blog.likes + 1 }
+    dispatch(updateBlog(updatedBlog))
+  }
+
+  const handleDelete = () => {
+    if(window.confirm(`Delete ${blog.title} ?`)){
+      try {
+        dispatch(deleteBlog(blog))
+        dispatch(setNotificationWithTimeout(`${blog.title} deleted.`))
+      }
+      catch(exception) {
+        console.log(exception)
+      }
+    }
   }
 
   const showDeleteButton = { display: isDeleteVisible? '': 'none' }
@@ -27,7 +52,7 @@ const Blog = ({ blog, username, handleLike, handleDelete }) => {
 
           <div className='likes'>
             {blog.likes}
-            <button className='likeButton' onClick={ () => handleLike(blog) }>like</button>
+            <button className='likeButton' onClick={ like }>like</button>
           </div>
 
           <div>added by: { blog.user.username }</div>
@@ -36,7 +61,7 @@ const Blog = ({ blog, username, handleLike, handleDelete }) => {
             <button onClick={ toggleShowAll }>hide</button>
             <button
               style={ showDeleteButton }
-              onClick={() => handleDelete(blog) }>delete</button>
+              onClick={ handleDelete }>delete</button>
           </div>
         </>
 
