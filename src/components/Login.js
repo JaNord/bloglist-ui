@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 
 import loginService from '../services/login'
 import blogService from '../services/blogs'
@@ -11,6 +12,7 @@ const Login = () => {
   const [password, setPassword] = useState('')
 
   const dispatch = useDispatch()
+  const history = useHistory()
 
   const login = async (event) => {
     event.preventDefault()
@@ -25,6 +27,7 @@ const Login = () => {
 
       dispatch(addUser(authenticatedUser))
       blogService.setToken(authenticatedUser.token)
+      history.push('/')
     }
 
     catch(exception) {
