@@ -59,8 +59,9 @@ const BlogInfo = ({ blog }) => {
           onClick={ handleDelete }>
               Delete
         </Button>
-        : null}
+        : null }
 
+      <Box component='span' display='block'>Added by { blog.user.name }</Box>
     </div>
   )
 }
