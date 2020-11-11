@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
+import { Button, TextField } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+
 import loginService from '../services/login'
 import blogService from '../services/blogs'
 import { addUser } from '../reducers/userReducer'
@@ -35,29 +38,40 @@ const Login = () => {
     }
   }
 
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      '& .MuiTextField-root': {
+        marginTop: theme.spacing(1),
+        width: 300,
+      },
+    },
+  }))
+
+  const classes = useStyles()
+
   return (
-    <form onSubmit={ login }>
+    <form className={ classes.root } onSubmit={ login }>
       <div>
-              username:
-        <input
-          id='username'
-          type='text'
+        <TextField
+          variant='outlined'
+          label='username'
           value={ username }
-          name='Username'
-          onChange={ ({ target }) => setUsername(target.value)}>
-        </input>
+          onChange={({ target }) => setUsername(target.value)}></TextField>
       </div>
       <div>
-              password:
-        <input
-          id='password'
+        <TextField
+          variant='outlined'
           type='password'
+          label='password'
           value={ password }
-          name='Password'
-          onChange={ ({ target }) => setPassword(target.value)}>
-        </input>
+          onChange={({ target }) => setPassword(target.value)}></TextField>
       </div>
-      <button id='loginButton' type='submit'>login</button>
+      <Button
+        type='submit'
+        variant="contained"
+        color="primary">
+          login
+      </Button>
     </form>
   )}
 

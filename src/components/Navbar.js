@@ -7,11 +7,18 @@ import {
   Button,
   Typography
 } from '@material-ui/core'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { removeUser } from '../reducers/userReducer'
 
 const Navbar = () => {
 
   const user = useSelector(state => state.user)
+  const dispatch = useDispatch()
+
+  const logOut = () => {
+    dispatch(removeUser())
+  }
+
   return (
     <AppBar position="static">
       <Toolbar >
@@ -23,14 +30,19 @@ const Navbar = () => {
         <Button color="inherit" component={ Link } to='/'>
           home
         </Button>
-        <Button color="inherit" component={ Link } to='/newBlog'>
-          add blog
-        </Button>
         <Button color="inherit" component={ Link } to='/users'>
           users
         </Button>
         {user
-          ? <em>{ user.name } logged in</em>
+          ? <div>
+            <Button color="inherit" component={ Link } to='/newBlog'>
+              add blog
+            </Button>
+
+            <em>{ user.name } logged in</em>
+
+            <Button color='inherit' onClick={ logOut }>Log out</Button>
+          </div>
           :
           <Button color="inherit" component={ Link } to="/login">
               login

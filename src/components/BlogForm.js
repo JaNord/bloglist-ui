@@ -26,7 +26,7 @@ const BlogForm = () => {
   const useStyles = makeStyles((theme) => ({
     root: {
       '& .MuiTextField-root': {
-        paddingTop: theme.spacing(1),
+        marginTop: theme.spacing(1),
         width: 750,
       },
     },
