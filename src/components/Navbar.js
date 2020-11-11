@@ -18,10 +18,13 @@ const Navbar = () => {
         <IconButton edge="start" color="inherit" aria-label="menu">
         </IconButton>
         <Typography type="title" color="inherit" style={{ flex: 1 }}>
-      Blog App
+          Bloglist
         </Typography>
         <Button color="inherit" component={ Link } to='/'>
-        home
+          home
+        </Button>
+        <Button color="inherit" component={ Link } to='/newBlog'>
+          add blog
         </Button>
         <Button color="inherit" component={ Link } to='/users'>
           users

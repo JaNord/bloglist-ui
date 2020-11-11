@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+
+import { Button, TextField } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 
 import { addBlog } from '../reducers/blogReducer'
-import { setNotificationWithTimeout } from '../reducers/notificationReducer'
 
 const BlogForm = () => {
 
@@ -10,61 +13,71 @@ const BlogForm = () => {
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
+  const history = useHistory()
   const dispatch = useDispatch()
 
   const createBlog = async (event) => {
     event.preventDefault()
 
     dispatch(addBlog({ title, author, url }))
-    dispatch(setNotificationWithTimeout(`${ title } created.`))
-    setTitle('')
-    setAuthor('')
-    setUrl('')
+    history.push('/')
   }
 
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      '& .MuiTextField-root': {
+        paddingTop: theme.spacing(1),
+        width: 750,
+      },
+    },
+  }))
+
+  const classes = useStyles()
+
   return (
-    <>
-      <h2>create new</h2>
+    <div>
+      <h2>Add new blog</h2>
 
-      <form onSubmit={ createBlog }>
+      <form className={ classes.root } onSubmit={ createBlog }>
         <div>
-          title:
-          <input
-            id='title'
-            type="text"
+          <TextField
+            fullWidth
+            variant='outlined'
+            label='title'
             value={ title }
-            onChange={ ({ target }) => setTitle(target.value) }>
-          </input>
+            onChange={ ({ target }) => setTitle(target.value)}>
+          </TextField>
         </div>
 
         <div>
-          author:
-          <input
-            id='author'
-            type="text"
+          <TextField
+            fullWidth
+            variant='outlined'
+            label='author'
             value={ author }
-            onChange={ ({ target }) => setAuthor(target.value) }>
-          </input>
+            onChange={ ({ target }) => setAuthor(target.value)}>
+          </TextField>
         </div>
 
         <div>
-          url:
-          <input
-            id='url'
-            type="text"
+          <TextField
+            fullWidth
+            variant='outlined'
+            label='url'
             value={ url }
-            onChange={ ({ target }) => setUrl(target.value) }>
-          </input>
+            onChange={ ({ target }) => setUrl(target.value)}>
+          </TextField>
         </div>
-
-        <button
-          type='submit'
-          id='submitBlogForm'>
-            create
-        </button>
+        <div>
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit">
+            Add blog
+          </Button>
+        </div>
       </form>
-    </>
+    </div>
   )
 }
-
 export default BlogForm

@@ -13,6 +13,7 @@ import { addUser } from './reducers/userReducer'
 import { initAllUsers } from './reducers/allUsersReducer'
 import UserList from './components/UserList'
 import UserInfo from './components/UserInfo'
+import BlogForm from './components/BlogForm'
 
 const App = () => {
 
@@ -61,6 +62,9 @@ const App = () => {
       <Switch>
         <Route path='/login'>
           <Login />
+        </Route>
+        <Route path='/newBlog'>
+          <BlogForm />
         </Route>
         <Route path='/users/:id'>
           <UserInfo user={ user } />
