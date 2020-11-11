@@ -25,7 +25,7 @@ const BlogList = () => {
             {blogs.map(blog => (
               <TableRow key={blog.id}>
                 <TableCell>
-                  <Link to={`/notes/${blog.id}`}>{blog.title}</Link>
+                  <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
                 </TableCell>
                 <TableCell>
                   {blog.author}

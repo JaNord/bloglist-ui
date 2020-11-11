@@ -7,19 +7,20 @@ import Container from '@material-ui/core/Container'
 import Login from './components/Login'
 import Navbar from './components/Navbar'
 import BlogList from './components/BlogList'
+import UserList from './components/UserList'
+import UserInfo from './components/UserInfo'
+import BlogForm from './components/BlogForm'
+import BlogInfo from './components/BlogInfo'
 import blogService from './services/blogs'
 import { getAllBlogs } from './reducers/blogReducer'
 import { addUser } from './reducers/userReducer'
 import { initAllUsers } from './reducers/allUsersReducer'
-import UserList from './components/UserList'
-import UserInfo from './components/UserInfo'
-import BlogForm from './components/BlogForm'
 
 const App = () => {
 
   const dispatch = useDispatch()
   const users = useSelector(state => state.allUsers)
-  // const blogs = useSelector(state => state.blogs)
+  const blogs = useSelector(state => state.blogs)
 
   useEffect(() => {
     try {
@@ -48,13 +49,17 @@ const App = () => {
       blogService.setToken(loggedUser.token)
     }}, [])
 
-  const userMatch = useRouteMatch('/users/:id')
+  const blogMatch = useRouteMatch('/blogs/:id')
+  const blog = blogMatch
+    ? blogs.find(blog => blog.id === blogMatch.params.id)
+    :null
 
+  const userMatch = useRouteMatch('/users/:id')
   const user = userMatch
     ? users.find(user => user.id === userMatch.params.id)
     : null
 
-  console.log(user)
+
 
   return (
     <Container>
@@ -68,6 +73,9 @@ const App = () => {
         </Route>
         <Route path='/users/:id'>
           <UserInfo user={ user } />
+        </Route>
+        <Route path='/blogs/:id'>
+          <BlogInfo blog={ blog } />
         </Route>
         <Route path='/users'>
           <UserList />
