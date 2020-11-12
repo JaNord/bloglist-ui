@@ -1,20 +1,15 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { useHistory } from 'react-router-dom'
 
 import { Button, TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
 import { addBlog } from '../reducers/blogReducer'
 
-const BlogForm = () => {
+const BlogForm = ({ history, dispatch }) => {
 
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
-
-  const history = useHistory()
-  const dispatch = useDispatch()
 
   const createBlog = async (event) => {
     event.preventDefault()

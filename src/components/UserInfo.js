@@ -1,5 +1,4 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 
 import {
   TableContainer,
@@ -7,29 +6,30 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Paper
+  Paper,
+  Typography
 } from '@material-ui/core'
 
-const UserInfo = ({ user }) => {
+const UserInfo = ({ user, userBlogs }) => {
 
   if(!user) {
     return null
   }
 
-
-  const usersBlogs = useSelector(state =>
-    state.blogs.filter(blog => blog.user.id === user.id))
-
   return (
     <div>
-      <h2>{ user.name }</h2>
-      { usersBlogs.length > 0
+      <Typography variant="h2" >
+        { user.name }
+      </Typography>
+      { userBlogs.length > 0
         ? <>
-          <h3>Posted blogs</h3>
+          <Typography variant="h4" >
+            Posted blogs
+          </Typography>
           <TableContainer component={ Paper }>
             <Table>
               <TableBody>
-                { usersBlogs.map(blog => (
+                { userBlogs.map(blog => (
                   <TableRow key={ blog.id }>
                     <TableCell>
                       { blog.title }
@@ -43,7 +43,9 @@ const UserInfo = ({ user }) => {
             </Table>
           </TableContainer>
         </>
-        : <h3>No posted blogs</h3>
+        : <Typography variant="h4" >
+            No blogs posted
+        </Typography>
       }
     </div>
   )

@@ -1,7 +1,5 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-
 import {
   TableContainer,
   Paper,
@@ -10,12 +8,10 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  Typography
 } from '@material-ui/core'
 
-const UserList = () => {
-
-  const users = useSelector(state => state.allUsers)
-  const blogs = useSelector(state => state.blogs)
+const UserList = ({ users, blogs }) => {
 
   const getAmountBlogsPerUser = (id) => {
     return blogs.filter(blog => blog.user.id === id).length
@@ -23,7 +19,9 @@ const UserList = () => {
 
   return (
     <div>
-      <h2> Users </h2>
+      <Typography variant="h2" >
+        Users
+      </Typography>
       <TableContainer component={ Paper }>
         <Table>
           <TableHead>

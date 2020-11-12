@@ -1,21 +1,15 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { useHistory } from 'react-router-dom'
 
 import { Button, TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
 import loginService from '../services/login'
-import blogService from '../services/blogs'
 import { addUser } from '../reducers/userReducer'
 import {  setNotificationWithTimeout } from '../reducers/notificationReducer'
 
-const Login = () => {
+const Login = ( { blogService, dispatch, history }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-
-  const dispatch = useDispatch()
-  const history = useHistory()
 
   const login = async (event) => {
     event.preventDefault()

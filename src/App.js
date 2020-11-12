@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Switch, Route, useRouteMatch } from 'react-router-dom'
+import { Switch, Route, useRouteMatch, useHistory } from 'react-router-dom'
 
 import { useDispatch, useSelector } from 'react-redux'
 import Container from '@material-ui/core/Container'
@@ -18,9 +18,12 @@ import { initAllUsers } from './reducers/allUsersReducer'
 
 const App = () => {
 
-  const dispatch = useDispatch()
   const users = useSelector(state => state.allUsers)
+  const currentUser = useSelector(state => state.currentUser)
   const blogs = useSelector(state => state.blogs)
+
+  const dispatch = useDispatch()
+  const history = useHistory()
 
   useEffect(() => {
     try {
@@ -49,6 +52,11 @@ const App = () => {
       blogService.setToken(loggedUser.token)
     }}, [])
 
+  const blogsByUser = (user) => {
+    if (user) {
+      return blogs.filter(blog => blog.user.id === user.id)
+    }}
+
   const blogMatch = useRouteMatch('/blogs/:id')
   const blog = blogMatch
     ? blogs.find(blog => blog.id === blogMatch.params.id)
@@ -59,29 +67,50 @@ const App = () => {
     ? users.find(user => user.id === userMatch.params.id)
     : null
 
-
-
   return (
     <Container>
-      <Navbar />
+      <Navbar
+        user={ currentUser }
+        dispatch={ dispatch }
+        history={ history }
+      />
       <Switch>
         <Route path='/login'>
-          <Login />
+          <Login
+            blogService={ blogService }
+            dispatch={ dispatch }
+            history={ history }/>
         </Route>
+
         <Route path='/newBlog'>
-          <BlogForm />
+          <BlogForm
+            dispatch={ dispatch }
+            history={ history } />
         </Route>
+
         <Route path='/users/:id'>
-          <UserInfo user={ user } />
+          <UserInfo
+            user={ user }
+            userBlogs={ blogsByUser(user) }/>
         </Route>
+
         <Route path='/blogs/:id'>
-          <BlogInfo blog={ blog } />
+          <BlogInfo
+            blog={ blog }
+            user={ user }
+            dispatch={ dispatch }
+            history={ history } />
         </Route>
+
         <Route path='/users'>
-          <UserList />
+          <UserList
+            blogs={ blogs }
+            users={ users }/>
         </Route>
+
         <Route path='/'>
-          <BlogList />
+          <BlogList
+            blogs={ blogs } />
         </Route>
       </Switch>
     </Container>

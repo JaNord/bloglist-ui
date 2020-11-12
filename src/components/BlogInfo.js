@@ -1,20 +1,15 @@
 import { Box, Button, List, ListItem, ListItemText,  TextField,  Typography } from '@material-ui/core'
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from 'react-router-dom'
 
 import { updateBlog, addComment, deleteBlog } from '../reducers/blogReducer'
 
 
-const BlogInfo = ({ blog }) => {
+const BlogInfo = ({ blog, user, dispatch, history }) => {
   if (!blog) {
     return null
   }
 
   const [comment, setComment] = useState('')
-  const user = useSelector(state => state.user)
-  const dispatch = useDispatch()
-  const history = useHistory()
 
   const like = () => {
     const updatedBlog = { ...blog, likes: blog.likes + 1 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import {
   AppBar,
   Toolbar,
@@ -7,14 +7,9 @@ import {
   Button,
   Typography
 } from '@material-ui/core'
-import { useSelector, useDispatch } from 'react-redux'
 import { removeUser } from '../reducers/userReducer'
 
-const Navbar = () => {
-
-  const user = useSelector(state => state.user)
-  const dispatch = useDispatch()
-  const history = useHistory()
+const Navbar = ({ user, history, dispatch }) => {
 
   const logOut = () => {
     dispatch(removeUser())
