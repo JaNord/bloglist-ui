@@ -1,9 +1,9 @@
-import { Box, Button } from '@material-ui/core'
-import React from 'react'
+import { Box, Button, List, ListItem, ListItemText,  TextField,  Typography } from '@material-ui/core'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
-import { updateBlog, deleteBlog } from '../reducers/blogReducer'
+import { updateBlog, addComment, deleteBlog } from '../reducers/blogReducer'
 
 
 const BlogInfo = ({ blog }) => {
@@ -11,6 +11,7 @@ const BlogInfo = ({ blog }) => {
     return null
   }
 
+  const [comment, setComment] = useState('')
   const user = useSelector(state => state.user)
   const dispatch = useDispatch()
   const history = useHistory()
@@ -32,13 +33,27 @@ const BlogInfo = ({ blog }) => {
     }
   }
 
+  const handleAddComment = () => {
+    if(comment.length > 0) {
+      try {
+        dispatch(addComment(blog.id, comment))
+        setComment('')
+      }
+      catch(exception) {
+        // show notification
+      }
+    }
+  }
+
   const canUserDeleteBlog = () => {
-    return blog.user.username === user.username
+    return user && blog.user.username === user.username
   }
 
   return (
     <div>
-      <Box component='h2' display='block'>{ blog.title }</Box>
+      <Typography variant="h2" >
+        { blog.title }
+      </Typography>
       <Box component='a' href={ blog.url } display='block'>{ blog.url }</Box>
       <Box component='span' display='block'>By { blog.author }</Box>
 
@@ -62,6 +77,36 @@ const BlogInfo = ({ blog }) => {
         : null }
 
       <Box component='span' display='block'>Added by { blog.user.name }</Box>
+
+      <br/>
+      <Typography variant="h3" >
+            comments
+      </Typography>
+      <List>
+        {blog.comments.map((comment, index) =>
+          // should not use index as key, but will do for now
+          <ListItem key={ index }>
+            <ListItemText
+              primary={ comment }
+            />
+          </ListItem>)}
+      </List>
+      { user
+        ? <div>
+          <TextField
+            value={ comment }
+            onChange={({ target }) => setComment(target.value) }
+            label='add a comment'>
+          </TextField>
+          <Button
+            display='inline'
+            variant="contained"
+            onClick={ handleAddComment }>
+          Add
+          </Button>
+        </div>
+        : null
+      }
     </div>
   )
 }
