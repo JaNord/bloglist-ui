@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { updateBlog, addComment, deleteBlog } from '../reducers/blogReducer'
 
 
-const BlogInfo = ({ blog, user, dispatch, history }) => {
+const BlogInfo = ({ blog, user, dispatch, history, setNotification }) => {
   if (!blog) {
     return null
   }
@@ -21,9 +21,10 @@ const BlogInfo = ({ blog, user, dispatch, history }) => {
       try {
         dispatch(deleteBlog(blog))
         history.push('/')
+        setNotification(`${blog.title} was deleted.`)
       }
       catch(exception) {
-        console.log(exception)
+        setNotification('Failed to delete.', true)
       }
     }
   }
@@ -35,7 +36,7 @@ const BlogInfo = ({ blog, user, dispatch, history }) => {
         setComment('')
       }
       catch(exception) {
-        // show notification
+        setNotification('Failed to add comment.', true)
       }
     }
   }

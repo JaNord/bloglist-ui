@@ -5,9 +5,8 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import loginService from '../services/login'
 import { addUser } from '../reducers/userReducer'
-import {  setNotificationWithTimeout } from '../reducers/notificationReducer'
 
-const Login = ( { blogService, dispatch, history }) => {
+const Login = ( { blogService, dispatch, history, setNotification }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -25,10 +24,11 @@ const Login = ( { blogService, dispatch, history }) => {
       dispatch(addUser(authenticatedUser))
       blogService.setToken(authenticatedUser.token)
       history.push('/')
+      setNotification(`${authenticatedUser.name} logged in.`)
     }
 
     catch(exception) {
-      dispatch(setNotificationWithTimeout('incorrect username or password'))
+      setNotification('Wrong username or password.', true)
     }
   }
 

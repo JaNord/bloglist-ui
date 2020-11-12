@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import { addBlog } from '../reducers/blogReducer'
 
-const BlogForm = ({ history, dispatch }) => {
+const BlogForm = ({ history, dispatch, setNotification }) => {
 
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
@@ -16,6 +16,7 @@ const BlogForm = ({ history, dispatch }) => {
 
     dispatch(addBlog({ title, author, url }))
     history.push('/')
+    setNotification(`${ title } was added.`)
   }
 
   const useStyles = makeStyles((theme) => ({

@@ -3,6 +3,9 @@ import { Switch, Route, useRouteMatch, useHistory } from 'react-router-dom'
 
 import { useDispatch, useSelector } from 'react-redux'
 import Container from '@material-ui/core/Container'
+import { ToastContainer, toast } from 'react-toastify'
+
+import 'react-toastify/dist/ReactToastify.css'
 
 import Login from './components/Login'
 import Navbar from './components/Navbar'
@@ -30,7 +33,7 @@ const App = () => {
       dispatch(getAllBlogs())
     }
     catch(exception) {
-      console.log(exception)
+      setNotification('Could not get blogs', true)
     }
   }, [])
 
@@ -39,9 +42,17 @@ const App = () => {
       dispatch(initAllUsers())
     }
     catch(exception) {
-      console.log(exception)
+      setNotification('Could not get users')
     }
   },[])
+
+  const setNotification = (message, isError = false) => {
+    if (isError) {
+      return toast.error(message)
+    }
+
+    return toast.info(message)
+  }
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
@@ -58,12 +69,12 @@ const App = () => {
     }}
 
   const blogMatch = useRouteMatch('/blogs/:id')
-  const blog = blogMatch
+  const matchedBlog = blogMatch
     ? blogs.find(blog => blog.id === blogMatch.params.id)
     :null
 
   const userMatch = useRouteMatch('/users/:id')
-  const user = userMatch
+  const matchedUser = userMatch
     ? users.find(user => user.id === userMatch.params.id)
     : null
 
@@ -79,27 +90,30 @@ const App = () => {
           <Login
             blogService={ blogService }
             dispatch={ dispatch }
-            history={ history }/>
+            history={ history }
+            setNotification={ setNotification }/>
         </Route>
 
         <Route path='/newBlog'>
           <BlogForm
             dispatch={ dispatch }
-            history={ history } />
+            history={ history }
+            setNotification={ setNotification }/>
         </Route>
 
         <Route path='/users/:id'>
           <UserInfo
-            user={ user }
-            userBlogs={ blogsByUser(user) }/>
+            user={ matchedUser }
+            userBlogs={ blogsByUser(matchedUser) }/>
         </Route>
 
         <Route path='/blogs/:id'>
           <BlogInfo
-            blog={ blog }
-            user={ user }
+            blog={ matchedBlog }
+            user={ currentUser }
             dispatch={ dispatch }
-            history={ history } />
+            history={ history }
+            setNotification= { setNotification }/>
         </Route>
 
         <Route path='/users'>
@@ -113,6 +127,17 @@ const App = () => {
             blogs={ blogs } />
         </Route>
       </Switch>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </Container>
   )
 }
